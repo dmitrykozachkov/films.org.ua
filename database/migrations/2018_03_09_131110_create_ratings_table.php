@@ -1,0 +1,47 @@
+<?php
+
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class CreateRatingsTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('ratings', function (Blueprint $table) {
+            $table->increments('id');
+
+            $table->integer('film_id')->unsigned()->index();
+            $table->integer('rating_resource_id')->unsigned()->index();
+            $table->float('rating');
+            $table->integer('count_votes')->unsigned();
+
+            $table->foreign('film_id')
+                ->references('id')
+                ->on('films')
+                ->onDelete('cascade');
+
+            $table->foreign('rating_resource_id')
+                ->references('id')
+                ->on('rating_resources')
+                ->onDelete('cascade');
+
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('raitings');
+    }
+}
